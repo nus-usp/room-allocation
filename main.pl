@@ -1,6 +1,25 @@
 ?- use_module(library(clpfd)).
 
-%% FLOORS
+%% UTIL== ==============================================
+
+unzip([], [], []).
+unzip([L|Ls], [R|Rs], [[L,R]|Ps]) :- unzip(Ls, Rs, Ps).
+
+%% PEOPLE ==============================================
+
+%% person(X) :- member(X, [varun, suyash, yunjie, imran, tham]).
+
+male(varun).
+male(suyash).
+male(imran).
+male(tham).
+
+female(yunjie).
+female(joey).
+female(roslinda).
+female(salina).
+
+%% FLOORS ==============================================
 
 floor(X) :- member(X, [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]).
 
@@ -14,7 +33,7 @@ female_floor(X) :- member(X, [7, 14, 18, 20]).
 mixed_floor(X) :- floor(X), not(male_floor(X)), not(female_floor(X)).
 
 
-%% ROOMS
+%% ROOMS ==============================================
 
 corridor_room(X) :- member(X, [1010, 1020, 1030, 1040, 1050, 1060, 1090, 1100, 1110, 1120, 1130, 1140, 1150, 1160, 1170, 1180, 1190, 1200]).
 
@@ -28,17 +47,26 @@ non_aircon_room(X) :- room(X), not(aircon_room(X)).
 
 unit([X, Y]) :- floor(X), room(Y).
 
-config(Units) :-
-	maplist(unit, Units),
-	all_distinct(Units).
+unit_num([X, Y], U) :- floor(X), room(Y), U #= X * 10000 + Y.
 
+all_distinct_units(Units) :-
+	maplist(unit_num, Units, UnitNums),
+	all_distinct(UnitNums).
 
+%% ALLOCATION =========================================
 
+alloc([Person, [Floor, _]]) :-
+	male(Person), male_floor(Floor);
+	female(Person), female_floor(Floor).
 
+match_all(Persons, Units) :-
+	unzip(Persons, Units, Allocs),
+	maplist(alloc, Allocs),
+	all_distinct_units(Units).
 
+%% ====================================================
 
-
-
+%% ?- match_all([varun, yunjie, imran, salina], Y).
 
 
 
