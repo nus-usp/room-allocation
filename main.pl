@@ -2,25 +2,11 @@
 :- consult(util).
 :- consult(room).
 
-%% PEOPLE ==============================================
-
-%% person(X) :- member(X, [varun, suyash, yunjie, imran, tham]).
-
-male(varun).
-male(suyash).
-male(imran).
-male(tham).
-
-female(yunjie).
-female(joey).
-female(roslinda).
-female(salina).
-
 %% ALLOCATION =========================================
 
 alloc([Person, [Floor, _]]) :-
-	male(Person), male_floor(Floor);
-	female(Person), female_floor(Floor).
+	gender(Person, male), male_floor(Floor);
+	gender(Person, female), female_floor(Floor).
 
 match_all(Persons, Units) :-
 	unzip(Persons, Units, Allocs),
@@ -29,8 +15,16 @@ match_all(Persons, Units) :-
 
 %% ====================================================
 
-%% ?- match_all([varun, yunjie, imran, salina], Y).
+person(X) :- table(X, _).
+gender(X, Y) :- table(X, Y).
 
-
+solve :-
+	csv_read_file('simple.csv', Rows, [functor(table), arity(2)]),
+	maplist(assert, Rows),
+	findall(X, person(X), Persons),
+	match_all(Persons, Units),
+	unzip(Rows, Units, RowUnits),
+	findall(row(X, Y, F, P), member([table(X, Y), [F, P]], RowUnits), Output),
+	csv_write_file('output.csv', Output).
 
 
