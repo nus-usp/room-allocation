@@ -5,7 +5,8 @@ floor(X) :- member(X, [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 rf_floor(X) :- member(X, [5, 9, 13, 17, 21]).
 laundry_floor(X) :- member(X, [9, 17]).
 
-freshmen_floor(X) :- member(X, [6, 8, 11, 14, 16, 20]).
+freshmen_floor(X) :- member(X, [6, 8, 11, 14, 16, 17, 20]).
+senior_floor(X) :- floor(X), not(freshmen_floor(X)).
 
 male_floor(X) :- member(X, [8, 10, 16, 19]).
 female_floor(X) :- member(X, [7, 14, 18, 20]).
