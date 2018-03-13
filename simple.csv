@@ -1,4 +1,5 @@
-varun,male
-suyash,male
-yunjie,female
-imran,male
+"name","gender","pref mixed","usp status","suite/corridor","aircon/nonaircon","floor pref","room pref"
+"1","female","yes","senior","corridor","no","9","101"
+"2","male","yes","freshmen","corridor","no","16",""
+"3","female","yes","senior","corridor","no","","106"
+"4","female","yes","senior","suite","aircon","",""
